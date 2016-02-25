@@ -17,6 +17,8 @@ public class TowerFragment extends Fragment
     private LinearLayout towerLayout;
     private ViewGroup towerGroup;
     private LayoutInflater theInflater;
+    private int state = 1;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,18 +35,36 @@ public class TowerFragment extends Fragment
         this.theButton = (Button)this.towerView.findViewById(R.id.theButton);
         this.theButton.setOnClickListener(new View.OnClickListener()
         {
-            @Override
+
             public void onClick(View v)
             {
-                TOHCore.toggleTowerButtons(myself);
+                myself.buttonClicked();
+
             }
         });
         return this.towerView;
     }
 
-    public void setButtonText(String s)
+    public void setButtonText(int changeState)
     {
-        this.theButton.setText(s);
+        this.state = changeState;
+        if(this.state == 1)
+        {
+            theButton.setText("Pop");
+        }
+        else if (this.state ==2)
+        {
+            theButton.setText("Push");
+        }
+        else if(this.state == 3)
+        {
+            theButton.setText("Source");
+        }
+    }
+
+    public String getButtonText()
+    {
+        return (String)theButton.getText();
     }
 
     public void addDisk(int size)
@@ -60,5 +80,27 @@ public class TowerFragment extends Fragment
         this.towerLayout.removeView(this.theButton);
         this.towerLayout.addView(disk);
         this.towerLayout.addView(this.theButton);
+    }
+
+    public void buttonClicked()
+    {
+        System.out.println("it reaches here ****");
+
+        if(this.state == 1)
+        {
+            System.out.println("And it gets here");
+            TOHCore.toggleTowerButtons(this);
+            TOHCore.diskSize = 3;
+
+        }
+        else if (this.state == 3)
+        {
+
+        }
+        else if (this.state == 2)
+        {
+            addDisk(TOHCore.diskSize);
+            TOHCore.resetTowerButtons();
+        }
     }
 }
